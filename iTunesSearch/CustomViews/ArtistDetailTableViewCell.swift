@@ -15,6 +15,7 @@ class ArtistDetailTableViewCell: UITableViewCell {
     @IBOutlet weak var trackPriceLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var genreNameLabel: UILabel!
+    @IBOutlet weak var imageview: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,6 +34,14 @@ class ArtistDetailTableViewCell: UITableViewCell {
         trackPriceLabel.text = String(describing: detail.trackPrice ?? 0)
         releaseDateLabel.text = detail.releaseDate.getDate()
         genreNameLabel.text = detail.primaryGenreName
+        let url = URL(string: detail.artworkUrl100)
+
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+            DispatchQueue.main.async {
+                self.imageview.image = UIImage(data: data!)
+            }
+        }
     }
 
 }

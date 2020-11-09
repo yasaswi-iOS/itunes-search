@@ -44,7 +44,8 @@ class SearchViewController: UIViewController {
         LoadingIndicatorView.display(title: "Performing Search...")
         let searchRequest = SearchArtistRequest()
         searchRequest.apiURL = SearchArtist.getArtistList(user: usernameField.text!).apiURL
-        APIManager.fetchArtistList(requestObject: searchRequest) { [weak self] (success, decodedResponse, error) in
+        let apiManager = APIManager(networkManager: NetworkManager(session: URLSession(configuration: URLSessionConfiguration.default)))
+        apiManager.fetchArtistList(requestObject: searchRequest) { [weak self] (success, decodedResponse, error) in
             LoadingIndicatorView.hide()
             if let response = decodedResponse {
                 let artistDetailViewController: ArtistDetailsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ArtistDetailsViewController") as! ArtistDetailsViewController

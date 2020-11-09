@@ -15,14 +15,25 @@ enum APIError: String, Error {
     case unKnownError = "Some thing went wrong"
 }
 
+
+protocol NetworkManagerProtocol {
+    //var session: URLSession { get set }
+    func get(request: NSMutableURLRequest, completion:  @escaping (_ success: Bool, _ object: AnyObject?) -> ())
+}
+
 /**
  This Class will used for establishing the network connection and get the response.
  */
-class NetworkManager {
+class NetworkManager :NetworkManagerProtocol {
     
-    class func dataTask(request: NSMutableURLRequest, method: String, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
+    var session: URLSession
+    
+    init(session: URLSession) {
+        self.session = session
+    }
+    
+    func dataTask(request: NSMutableURLRequest, method: String, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
         request.httpMethod = method
-        let session = URLSession(configuration: URLSessionConfiguration.default)
         session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
             if let data = data {
                 if let returnData = String(data: data, encoding: .utf8) {
@@ -36,15 +47,15 @@ class NetworkManager {
             }.resume()
     }
     
-    class func post(request: NSMutableURLRequest, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
+    func post(request: NSMutableURLRequest, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
         dataTask(request: request, method: "POST", completion: completion)
     }
     
-    class func put(request: NSMutableURLRequest, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
+    func put(request: NSMutableURLRequest, completion: @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
         dataTask(request: request, method: "PUT", completion: completion)
     }
     
-    class func get(request: NSMutableURLRequest, completion:  @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
+    func get(request: NSMutableURLRequest, completion:  @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
         dataTask(request: request, method: "GET", completion: completion)
     }
     

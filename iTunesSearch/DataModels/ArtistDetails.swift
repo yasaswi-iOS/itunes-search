@@ -18,4 +18,5 @@ struct ArtistDetails: Codable {
     let trackPrice: Float?
     let releaseDate: String
     let primaryGenreName: String
+    let artworkUrl100: String
 }

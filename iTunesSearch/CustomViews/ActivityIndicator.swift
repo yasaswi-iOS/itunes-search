@@ -11,9 +11,9 @@ import UIKit
 
 class LoadingIndicatorView {
     
-    static let viewForActivityIndicator = UIView()
+    static var viewForActivityIndicator = UIView()
     static let loadingTextLabel = UILabel()
-    static let activityIndicatorView = UIActivityIndicatorView(style: .large)
+    static var activityIndicatorView = UIActivityIndicatorView(style: .large)
     
     static func display(for view: UIView? = nil, title: String) {
         var currentView: UIView?

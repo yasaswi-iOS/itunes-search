@@ -9,6 +9,32 @@
 import XCTest
 @testable import iTunesSearch
 
+
+class MockNetworkManager : NetworkManager {
+   
+    private let data: Bool
+    private let response: String
+    
+    init(data: Bool, response: String) {
+        self.data = data
+        self.response = response
+        super.init(session: URLSession())
+        
+    }
+    
+    override func get(request: NSMutableURLRequest, completion:  @escaping (_ success: Bool, _ object: AnyObject?) -> ()) {
+        
+        completion( self.data, self.response as AnyObject)
+    }
+    
+    
+    
+    
+}
+
+
+
+
 class iTunesSearchTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -18,17 +44,22 @@ class iTunesSearchTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testFetchArtistList() {
+        var mockNetworkManager =  MockNetworkManager(data: false, response: "")
+        
+        let apiManager  = APIManager(networkManager: mockNetworkManager)
+        
+        apiManager.fetchArtistList(requestObject: BaseRequest()) {  [weak self] (success, decodedResponse, error) in
+            
+           XCTAssertNotNil(decodedResponse)
+            
         }
+        
+        
+        
     }
+
+    
 
 }

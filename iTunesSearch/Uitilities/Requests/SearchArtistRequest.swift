@@ -22,7 +22,6 @@ extension SearchArtist {
 
 
 class SearchArtistRequest: BaseRequest {
-    
     override init() {
         super.init()
         print (apiURL)
